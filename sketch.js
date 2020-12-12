@@ -2,7 +2,8 @@
 var car,wall;
 var speed,weight;
 var deformation;
-var approvedCars;
+var approvedCars=0;
+
 
 function setup() {
   //creating the canvas
@@ -14,7 +15,7 @@ function setup() {
 
   //creating the car
   car=createSprite(50, 200, 50, 50);
-  car.shapeColor="black";
+
 
   //creating the wall
   wall=createSprite(1500, 200, 60, height/2);
@@ -29,13 +30,14 @@ function draw() {
   //clearing the background
   background("lightgreen"); 
 
+  approvedCars=0;
+
+
   //text settings
-  fill("white");
+  fill("red");
   textFont("Comic Sans MS");
   textSize(30);
   
-  //displaying the no of approved cars
-  text("Approved cars :",approvedCars,100,200);
 
   //Detecting the collision of the car with the wall
   if(wall.x-car.x <= car.width/2 + wall.width/2 ) {
@@ -44,9 +46,23 @@ function draw() {
     car.velocityX=0;
 
     //adding the formula
-   deformation= 0.5 * weight* 2* speed  / 22500;
+   deformation= 0.5 * weight* speed* speed  / 22500;
 
    //assigning different colors to the car based on the collision
+
+   if(deformation>180){
+
+    car.shapeColor="red";
+   
+  }
+
+  if(deformation>100 && deformation < 180){
+
+    car.shapeColor="yellow";
+    approvedCars=approvedCars+1;
+
+  }
+
   if(deformation<100){
 
      car.shapeColor="green";
@@ -54,22 +70,14 @@ function draw() {
 
    }
   
-  if(deformation>100 && deformation < 180){
-
-     car.shapeColor="yellow";
-     approvedCars=approvedCars+1;
-
-   }
-
-  if(deformation>180){
-
-      car.shapeColor="red";
-     
-    }
-
   }
+
 
   //displaying the sprites
   drawSprites();
 
+  //displaying the no of approved cars
+  text("Approved cars :"+approvedCars,100,200);
+
 }
+
